@@ -12,7 +12,7 @@ from accounts.models import UserAccount
 class DetailBookView(DetailView):
     model=Book
     pk_url_kwarg='id'
-    template_name='book_details.html'
+    template_name='accounts/book_details.html'
     context_object_name = 'book'
     def post(self, request, *args, **kwargs):
         comment_form = forms.CommentForm(data=self.request.POST)
