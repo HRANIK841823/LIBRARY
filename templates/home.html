@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<!-- Flash Messages -->
+{% if messages %}
+<div class="mt-4 space-y-4">
+    {% for message in messages %}
+    <div 
+        class="relative bg-{{ message.tags }}-100 border-l-4 border-{{ message.tags }}-500 text-{{ message.tags }}-700 p-4 rounded shadow transition duration-300 ease-in-out">
+        <strong class="font-semibold">{{ message.tags|title }}:</strong> {{ message }}
+        <!-- Close Button -->
+        <button 
+            class="absolute top-2 right-2 text-{{ message.tags }}-500 hover:text-{{ message.tags }}-700 transition ease-in-out duration-200" 
+            onclick="this.parentElement.style.display='none';">
+            ✕
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<!-- Welcome Section -->
+<div class=" flex flex-wrap items-center justify-between bg-gray-100 p-8 rounded-lg shadow-lg">
+    <div class="w-full md:w-1/2 mb-6 md:mb-0">
+        <h1 class="text-4xl font-extrabold text-blue-800">Welcome to BUBT Library – A rich collection of books here.</h1>
+        <p class="text-gray-700 mt-4 leading-relaxed">
+            At YourLibrary, we offer a vast collection of books from various genres and authors, providing you with a seamless and enriching reading experience. Whether you're searching for your next great read or exploring different literary worlds, our platform allows you to browse detailed listings with titles, authors, categories, and availability. Filter by genre, compare reviews, and enjoy the convenience of borrowing or reserving books through our user-friendly interface. YourLibrary is your trusted companion for discovering knowledge, stories, and inspiration.
+        </p>
+    </div>
+    <div class="w-full md:w-1/2">
+        <img src="{% static 'header.jpg' %}" alt="BUBT Library Header Image" class="rounded-lg shadow-lg">
+    </div>
+</div>
+
+<div class="container mx-auto mt-12">
+    <div class="grid grid-cols-12 gap-6">
+        <!-- Category Section -->
+        <div class="col-span-12 lg:col-span-3 bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Categories</h3>
+            <div class="flex flex-col gap-2">
+                {% for cat in categories %}
+                <a href="{% url 'category_wise_book' cat.slug %}" 
+                   class="bg-blue-100 text-blue-700 font-bold uppercase tracking-widest py-2 px-6 rounded-lg hover:bg-blue-200 transition duration-300">
+                   {{ cat.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Book Collection Section -->
+        <div class="col-span-12 lg:col-span-9">
+            <h2 class="text-3xl font-extrabold text-white mb-6 text-center">Our Book Collection</h2>
+            <h4 class="bg-yellow-300 text-yellow-900 font-bold py-2 px-4 rounded-lg inline-block mb-6">
+                Total Books Found: {{ books | length }}
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for book in books %}
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
+                    <img src="{{ book.image.url }}" alt="{{ book.image.url }}" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800 truncate">{{ book.title }}</h3>
+                        <p class="text-gray-600 mt-2">{{ book.description|truncatewords:20 }}</p>
+                        <p class="mt-4"><strong>Category:</strong> {{ book.category }}</p>
+                        <h4 class="text-lg font-bold text-green-700 mt-2">Borrowing Price: BDT {{ book.price }}</h4>
+                        <a href="{% url 'book_details' book.id %}" 
+                           class="block mt-4 bg-blue-500 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+                           View Details
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block footer %}
+<footer>
+    <footer class="footer bg-white text-neutral-content  px-6 py-9 lg:px-14 lg:py-32 place-items-center flex justify-around lg:flex-row flex-col">
+         <aside class="space-y-4">
+        <div class="flex gap-7 text-xl font-normal">
+            <h4>Download Know</h4>
+            <h4>license</h4>
+        </div>
+        <div class="flex lg:flex-row flex-col gap-7 text-xl font-normal ">
+          <h4>About</h4>
+          <h4>Features</h4>
+          <h4>Pricing</h4>
+          <h4>Careers</h4>
+          <h4>Help</h4>
+          <h4>PrivacyPolicy</h4>
+        </div>
+        <p class="text-xl font-normal">&copy;2020 BUBT Library.All rights Reserved</p>
+         </aside>
+      <nav>
+        <h6 class="footer-title text-xl font-medium">BUBT Library App Realse Soon</h6>
+      </nav>
+    </footer>
+  </footer>
+{% endblock %}
